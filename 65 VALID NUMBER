@@ -1,0 +1,52 @@
+
+class Solution {
+    public boolean isNumber(String s) {
+        s = s.toLowerCase();
+        boolean dotSeen = false,
+                eSeen = false,
+                numberBeforeE = false,
+                numberAfterE = false;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c >= '0' && c <= '9') {
+                if (eSeen) {
+                    numberAfterE = true;
+                } else {
+                    numberBeforeE = true;
+                }
+
+            } else if (c == '.') {
+                if (dotSeen || eSeen) {
+                    return false;
+                }
+                dotSeen = true;
+
+            } else if (c == '+' || c == '-') {
+                if (i > 0 && s.charAt(i - 1) != 'e') {
+                    return false;
+                }
+
+            } else if (c == 'e') {
+                if (eSeen) {
+                    return false;
+                }
+                eSeen = true;
+
+            } else {
+                return false;
+            }
+        }
+
+        if (!numberBeforeE) {
+            return false;
+        }
+
+        if (eSeen && !numberAfterE) {
+            return false;
+        }
+
+        return true;
+    }
+}
